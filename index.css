@@ -1,0 +1,17 @@
+.center {
+  text-align: center;
+}
+
+.row {
+  display: flex;
+}
+
+.col {
+  width: 33%;
+}
+
+.selected {
+  opacity: 1 !important;
+  stroke: orange;
+  stroke-width: 1px;
+}
