@@ -35,13 +35,13 @@ const FRAME3 = d3
   .attr("class", "frame");
 
 d3.csv("data/iris.csv").then((data) => {
-  const MAX_PETAL_LENGTH = d3.max(data, (d) => parseInt(d["Petal_Length"]));
+  const MAX_PETAL_LENGTH = d3.max(data, (d) => parseInt(d["Sepal_Length"]));
   const X_SCALE_PETAL_LENGTH = d3
     .scaleLinear()
     .domain([0, MAX_PETAL_LENGTH + 1])
     .range([0, VIS_WIDTH]);
 
-  const MAX_SEPAL_LENGTH = d3.max(data, (d) => parseInt(d["Sepal_Length"]));
+  const MAX_SEPAL_LENGTH = d3.max(data, (d) => parseInt(d["Petal_Length"]));
   const Y_SCALE_SEPAL_LENGTH = d3
     .scaleLinear()
     .domain([0, MAX_SEPAL_LENGTH + 1])
@@ -51,8 +51,8 @@ d3.csv("data/iris.csv").then((data) => {
     .data(data)
     .enter()
     .append("circle")
-    .attr("cx", (d) => X_SCALE_PETAL_LENGTH(d["Petal_Length"]) + MARGINS.left)
-    .attr("cy", (d) => Y_SCALE_SEPAL_LENGTH(d["Sepal_Length"]) + MARGINS.top)
+    .attr("cx", (d) => X_SCALE_PETAL_LENGTH(d["Sepal_Length"]) + MARGINS.left)
+    .attr("cy", (d) => Y_SCALE_SEPAL_LENGTH(d["Petal_Length"]) + MARGINS.top)
     .attr("r", 5)
     .attr("fill", (d) => SPECIES_COLOR[d["Species"]])
     .attr("stroke-width", 3)
@@ -77,13 +77,13 @@ d3.csv("data/iris.csv").then((data) => {
     .style("text-decoration", "underline")
     .text("Petal Length vs Sepal Length");
 
-  const MAX_PETAL_WIDTH = d3.max(data, (d) => parseInt(d["Petal_Width"]));
+  const MAX_PETAL_WIDTH = d3.max(data, (d) => parseInt(d["Sepal_Width"]));
   const X_SCALE_PETAL_WIDTH = d3
     .scaleLinear()
     .domain([0, MAX_PETAL_WIDTH + 1])
     .range([0, VIS_WIDTH]);
 
-  const MAX_SEPAL_WIDTH = d3.max(data, (d) => parseInt(d["Sepal_Width"]));
+  const MAX_SEPAL_WIDTH = d3.max(data, (d) => parseInt(d["Petal_Width"]));
   const Y_SCALE_SEPAL_WIDTH = d3
     .scaleLinear()
     .domain([0, MAX_SEPAL_WIDTH + 1])
@@ -93,8 +93,8 @@ d3.csv("data/iris.csv").then((data) => {
     .data(data)
     .enter()
     .append("circle")
-    .attr("cx", (d) => X_SCALE_PETAL_WIDTH(d["Petal_Width"]) + MARGINS.left)
-    .attr("cy", (d) => Y_SCALE_SEPAL_WIDTH(d["Sepal_Width"]) + MARGINS.top)
+    .attr("cx", (d) => X_SCALE_PETAL_WIDTH(d["Sepal_Width"]) + MARGINS.left)
+    .attr("cy", (d) => Y_SCALE_SEPAL_WIDTH(d["Petal_Width"]) + MARGINS.top)
     .attr("r", 5)
     .attr("fill", (d) => SPECIES_COLOR[d["Species"]])
     .attr("stroke-width", 3)
@@ -124,7 +124,7 @@ d3.csv("data/iris.csv").then((data) => {
       .brush() // Add the brush feature using the d3.brush function
       .extent([
         [MARGINS.left, MARGINS.top],
-        [VIS_WIDTH, VIS_HEIGHT],
+        [FRAME_WIDTH - MARGINS.left, FRAME_HEIGHT - MARGINS.top],
       ]) // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
       .on("start brush", updateChart) // Each time the brush selection changes, trigger the 'updateChart' function
   );
@@ -140,8 +140,8 @@ d3.csv("data/iris.csv").then((data) => {
     circles.classed("selected", function (d) {
       const brushed = isBrushed(
         extent,
-        X_SCALE_PETAL_WIDTH(d["Petal_Width"]) + MARGINS.left,
-        Y_SCALE_SEPAL_WIDTH(d["Sepal_Width"]) + MARGINS.top
+        X_SCALE_PETAL_WIDTH(d["Sepal_Width"]) + MARGINS.left,
+        Y_SCALE_SEPAL_WIDTH(d["Petal_Width"]) + MARGINS.top
       );
       d3.select(`#length-${d.id}`).attr("class", brushed ? "selected" : null);
       highlightSpecies[d["Species"]] =
